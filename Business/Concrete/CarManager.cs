@@ -23,6 +23,7 @@ namespace Business.Concrete
             if (car.CarName.Length>2 && car.DailyPrice>0)
             {
                 _carDal.Add(car);
+                Console.WriteLine("Başarıyla eklendi.");
             }
             else if(car.CarName.Length <= 2)
             {
