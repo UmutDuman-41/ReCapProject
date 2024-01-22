@@ -9,11 +9,12 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
-            CarManager carManager1 = new CarManager(new EfCarDal());
-            foreach (var manager in carManager1.GetCarsDailyPrice())
-            {
-                Console.WriteLine(manager.Description);
-            }
+            //CarManager carManager1 = new CarManager(new EfCarDal());
+            //foreach (var manager in carManager1.GetCarsDailyPrice())
+            //{
+            //    Console.WriteLine(manager.Description);
+            //}
+
             Car car = new Car();
             car.CarId = 1;
             car.CarName = "Test";
@@ -23,12 +24,33 @@ namespace ConsoleUI
             car.DailyPrice = 500;
             car.Description = "Test model";
 
-            carManager1.Add(car);
-            CarManager carManager = new CarManager(new InMemoryCarDal());
-            foreach (var manager in carManager.GetAll())
+
+            ReCapContext reCapContext = new ReCapContext();
+
+            reCapContext.Cars.Add(car);
+           
+            var result = from i in reCapContext.Cars
+                         select i;
+
+            foreach (var item in result)
             {
-                Console.WriteLine(manager.Description);
+                Console.WriteLine(item.CarName);
             }
+
+
+            //carManager1.Add(car);
+            //CarManager carManager = new CarManager(new InMemoryCarDal());
+            //foreach (var manager in carManager1.GetAll())
+            //{
+            //    Console.WriteLine(manager.Description);
+            //}
+
+            //ReCapContext reCapContext = new ReCapContext();
+            //reCapContext.Cars.Add(car);
+            //foreach (var manager in carManager.GetAll())
+            //{
+
+            //}
 
           
 
