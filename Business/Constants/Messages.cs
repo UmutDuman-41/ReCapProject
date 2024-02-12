@@ -18,6 +18,8 @@ namespace Business.Constants
         public static string Added =  "Başarılı bir şekilde eklendi.";
         public static string Deleted = "Başarılı bir şekilde silindi.";
         public static string Updated = "Başarılı bir şekilde güncellendi.";
+        public static string Listed = "Listeleme Başarılı";
+        public static string Error = "İşlem Başarısız";
 
     }
 }
