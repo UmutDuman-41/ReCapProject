@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Business.Concrete
 {
-    public class CustomerManager : ICustomerServise
+    public class CustomerManager : ICustomerService
     {
         ICustomerDal _customerDal;
 

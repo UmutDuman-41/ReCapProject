@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Business.Abstract
 {
-    public interface IBrandServise
+    public interface IBrandService
     {
         IDataResult<List<Brand>> GetAll();
         IDataResult<Brand> GetById(int id);

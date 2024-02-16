@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Business.Abstract
 {
-    public interface IColorServise
+    public interface IColorService
     {
         IDataResult<List<Color>> GetAll();
         IDataResult <Color> GetById(int id);

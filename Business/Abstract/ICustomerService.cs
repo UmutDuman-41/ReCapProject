@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Business.Abstract
 {
-    public interface ICustomerServise
+    public interface ICustomerService
     {
         IDataResult<List<Customer>> GetAll();
         IDataResult<Customer> GetById(int id);
