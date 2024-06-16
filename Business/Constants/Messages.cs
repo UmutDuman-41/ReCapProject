@@ -21,5 +21,11 @@ namespace Business.Constants
         public static string Listed = "Listeleme Başarılı";
         public static string Error = "İşlem Başarısız";
 
+        public static string PassMustContainBigLetter = "Şifre Büyük Harf İçermelidir";
+        public static string PassMustContainSpecialChar = "Şifre Özel Karakter İçermelidir.";
+        public static string PassMustContainLetterAndDigit = "Şifre Harf Ve Sayı İçermelidir.";
+        public static string PassMustContain = "Kullanıcı Bilgileri Yanlış.";
+
+
     }
 }
