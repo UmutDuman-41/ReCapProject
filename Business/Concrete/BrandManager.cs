@@ -1,5 +1,8 @@
 ﻿using Business.Abstract;
-using Business.Constants;
+using Business.Constants.Messages;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
+using Core.Utilities.Business;
 using Core.Utilities.Result;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -33,19 +36,52 @@ namespace Business.Concrete
 
         public IDataResult <Brand> GetById(int id)
         {
-            return new SuccessDataResult<Brand>(_brandDal.Get(b=>b.BrandId==id));
+            IResult result = BusinessRules.Run(CheckBrandExist(id));
+            if (result.Success)
+            {
+                return new SuccessDataResult<Brand>(_brandDal.Get(b => b.BrandId == id));
+            }
+            return new ErrorDataResult<Brand>();
+            
         }
 
-        public IResult Insert(Brand brand)
+        [ValidationAspect(typeof(BrandValidator))]
+        public IResult Add(Brand brand)
         {
-            _brandDal.Add(brand);
-            return new SuccessResult(Messages.Added);
+            IResult result = BusinessRules.Run(CheckBrandNameExist(brand.BrandName));
+            if (result.Success)
+            {
+                _brandDal.Add(brand);
+                return new SuccessResult(Messages.Added);
+            }
+            return new ErrorResult();
         }
 
+        [ValidationAspect(typeof(BrandValidator))]
         public IResult Update(Brand brand)
         {
             _brandDal.Add(brand);
             return new SuccessResult(Messages.Updated);
+        }
+
+        private IResult CheckBrandExist(int BrandId)
+        {
+            var result = _brandDal.GetAll(b => b.BrandId == BrandId).Any();
+            if (result)
+            {
+                return new SuccessResult();
+            }
+            return new ErrorResult("Marka Bulunamadı.");
+        }
+
+        private IResult CheckBrandNameExist(string BrandName)
+        {
+            var result = _brandDal.GetAll(b => b.BrandName == BrandName).Any();
+            if (!result)
+            {
+                return new ErrorResult("Aynı Mara Mevcuttur.");
+            }
+            return new SuccessResult();
         }
     }
 }

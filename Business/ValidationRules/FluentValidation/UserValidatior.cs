@@ -1,4 +1,5 @@
-﻿using Business.Constants;
+﻿using Business.Constants.Messages;
+using Core.Entities.Concrete;
 using Entities.Concrete;
 using FluentValidation;
 using System;
@@ -9,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace Business.ValidationRules.FluentValidation
 {
-    public class UserValidation:AbstractValidator<User>
+    public class UserValidatior:AbstractValidator<User>
     {
-        public UserValidation() 
+        public UserValidatior() 
         {
             RuleFor(u => u.FirstName).NotEmpty();
             RuleFor(u => u.FirstName).MinimumLength(2);
@@ -27,12 +28,12 @@ namespace Business.ValidationRules.FluentValidation
             RuleFor(u => u.Email).Must(ContainsComet);
             RuleFor(u => u.Email).Must(ContainsDotCom);
 
-            RuleFor(u => u.Password).NotEmpty();
-            RuleFor(u => u.Password).MinimumLength(4);
-            RuleFor(u => u.Password).MaximumLength(8);
-            RuleFor(u => u.Password).Must(ContainsSpecialChar).WithMessage(Messages.PassMustContainSpecialChar);
-            RuleFor(u => u.Password).Must(ContainsBigLetter).WithMessage(Messages.PassMustContainBigLetter);
-            RuleFor(u => u.Password).Must(ContainLetterAndDigit).WithMessage(Messages.PassMustContainLetterAndDigit);
+            //RuleFor(u => u.Password).NotEmpty();
+            //RuleFor(u => u.Password).MinimumLength(4);
+            //RuleFor(u => u.Password).MaximumLength(8);
+            //RuleFor(u => u.Password).Must(ContainsSpecialChar).WithMessage(Messages.PassMustContainSpecialChar);
+            //RuleFor(u => u.Password).Must(ContainsBigLetter).WithMessage(Messages.PassMustContainBigLetter);
+            //RuleFor(u => u.Password).Must(ContainLetterAndDigit).WithMessage(Messages.PassMustContainLetterAndDigit);
         }
 
         private bool ContainsSpecialChar(string arg)

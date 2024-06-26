@@ -1,5 +1,8 @@
 ﻿using Business.Abstract;
-using Business.Constants;
+using Business.Constants.Messages;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
+using Core.Utilities.Business;
 using Core.Utilities.Result;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -21,22 +24,16 @@ namespace Business.Concrete
             _carDal = carDal;
         }
 
+        [ValidationAspect(typeof(CarValidator))]
         public IResult Add(Car car)
         {
-            if (car.CarName.Length > 2 && car.DailyPrice > 0)
+            IResult result = BusinessRules.Run(CheckIfCarNameExist(car.CarName),CheckIfBrandIdCountControl(car.BrandId));
+            if (result != null)
             {
-                _carDal.Add(car);
-                return new SuccessResult(Messages.ProductAdded);
+                return result;
             }
-            else if (car.CarName.Length <= 2)
-            {
-                return new ErrorResult(Messages.ProductNameInvalid);
-            }
-            else if (car.DailyPrice <= 0)
-            {
-                return new ErrorResult(Messages.ProductsDailyPrice);
-            }
-            else { return new ErrorResult(Messages.ProductNameInvalid); }
+            _carDal.Add(car);
+            return new SuccessResult(Messages.Added);
         }
 
         public IResult Delete(Car car)
@@ -44,6 +41,8 @@ namespace Business.Concrete
             _carDal.Delete(car);
             return new SuccessResult(Messages.Deleted);
         }
+
+        [ValidationAspect(typeof(CarValidator))]
         public IResult Update(Car car)
         {
             _carDal.Update(car);
@@ -80,6 +79,26 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(P => P.Description.Length > 2));
         }
 
-     
+
+        private IResult CheckIfCarNameExist(string carName)
+        {
+            var result = _carDal.GetAll(c => c.CarName == carName).Any();
+            if (result)
+            {
+                return new ErrorResult(Messages.Error);
+            }
+            return new SuccessResult();
+        }
+
+        private IResult CheckIfBrandIdCountControl(int BrandId)
+        {
+            var result = _carDal.GetAll(c => c.BrandId == BrandId).Count;
+            if (result > 2)
+            {
+                return new ErrorResult();
+            }
+            return new SuccessResult();
+        }
+
     }
 }
