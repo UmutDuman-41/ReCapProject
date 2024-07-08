@@ -1,5 +1,7 @@
 ﻿using Business.Abstract;
 using Business.Constants.Messages;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Result;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -36,6 +38,7 @@ namespace Business.Concrete
             return new SuccessDataResult<Rental>(_rentalDal.Get(r=>r.Id ==id),Messages.Listed);
         }
 
+        [ValidationAspect(typeof(RentalValidator))]
         public IResult Insert(Rental rental)
         {
             bool isCarAvailable = !(_rentalDal.GetAll(r => r.CarId == rental.CarId && r.ReturnDate == null).Any());
@@ -47,6 +50,8 @@ namespace Business.Concrete
             return new SuccessResult(Messages.Added);
         }
 
+
+        [ValidationAspect(typeof(RentalValidator))]
         public IResult Update(Rental rental)
         {
             _rentalDal.Update(rental);

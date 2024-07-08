@@ -21,6 +21,8 @@ namespace Business.Abstract
         //void Add(Car car)
         IResult Delete(Car car);
         IResult Update(Car car);
+
+        IResult AddTransactionalTest(Car car);
         
 
     }

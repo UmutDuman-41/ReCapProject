@@ -1,6 +1,10 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspects.Autofac;
 using Business.Constants.Messages;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Caching;
+using Core.Aspects.Autofac.Performance;
+using Core.Aspects.Autofac.Transaction;
 using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Business;
 using Core.Utilities.Result;
@@ -25,6 +29,8 @@ namespace Business.Concrete
         }
 
         [ValidationAspect(typeof(CarValidator))]
+        [SecuredOperation("admin")]
+        [PerformanceAspect(15)]
         public IResult Add(Car car)
         {
             IResult result = BusinessRules.Run(CheckIfCarNameExist(car.CarName),CheckIfBrandIdCountControl(car.BrandId));
@@ -36,19 +42,26 @@ namespace Business.Concrete
             return new SuccessResult(Messages.Added);
         }
 
+        [SecuredOperation("admin,Car.Delete")]
         public IResult Delete(Car car)
         {
             _carDal.Delete(car);
             return new SuccessResult(Messages.Deleted);
         }
 
+
+        [SecuredOperation("admin,Car.Update")]
         [ValidationAspect(typeof(CarValidator))]
+        [CacheRemoveAspect("IProductService.Get")]
         public IResult Update(Car car)
         {
             _carDal.Update(car);
             return new SuccessResult(Messages.Updated);
         }
 
+
+
+        [CacheAspect]
         public IDataResult<List<Car>> GetAll()
         {
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(), Messages.ProductsListed);
@@ -59,6 +72,9 @@ namespace Business.Concrete
             return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails());
         }
 
+
+        [CacheAspect]
+        [PerformanceAspect(5)]
         public IDataResult<List<Car>> GetCarsByBrandId(int id)
         {
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(p => p.BrandId == id));
@@ -100,5 +116,20 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+
+
+        [TransactionScopeAspect]
+        public IResult AddTransactionalTest(Car car)
+        {
+            Add(car);
+            if (car.DailyPrice < 15)
+            {
+                throw new Exception(""); 
+            }
+
+            Add(car);
+
+            return null;
+        }
     }
 }

@@ -9,6 +9,9 @@ using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Core.Extensions;
+using Core.Utilities.IoC;
+using Core.DependencyResolvers;
 
 namespace WebAPI
 {
@@ -46,6 +49,8 @@ namespace WebAPI
                     };
                 });
 
+            builder.Services.AddDependencyResolvers(new ICoreModule[] {new CoreModule()});
+
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -75,6 +80,7 @@ namespace WebAPI
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
 

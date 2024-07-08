@@ -1,5 +1,7 @@
 ﻿using Business.Abstract;
 using Business.Constants.Messages;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Result;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -36,12 +38,14 @@ namespace Business.Concrete
             return new SuccessDataResult<Customer>(_customerDal.Get(c=>c.UserId == id),Messages.Listed);
         }
 
+        [ValidationAspect(typeof(CustomerValidator))]
         public IResult Insert(Customer customer)
         {
             _customerDal.Add(customer);
             return new SuccessResult(Messages.Added);
         }
 
+        [ValidationAspect(typeof(CustomerValidator))]
         public IResult Update(Customer customer)
         {
             _customerDal.Update(customer);

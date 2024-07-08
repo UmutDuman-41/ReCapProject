@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Core.Entities.Concrete;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -18,7 +19,7 @@ namespace WebAPI.Controllers
         }
 
         //[HttpGet("getall")]
-        //public IActionResult GetAll() 
+        //public IActionResult GetAll()
         //{
         //    var result = _userService.GetAll();
         //    if (result.Success)
@@ -29,7 +30,7 @@ namespace WebAPI.Controllers
         //}
 
         //[HttpGet("getid")]
-        //public IActionResult GetById(int id) 
+        //public IActionResult GetById(int id)
         //{
         //    var result = _userService.GetById(id);
         //    if (result.Success)
@@ -39,22 +40,22 @@ namespace WebAPI.Controllers
         //    return BadRequest(result);
         //}
 
-        //[HttpPost("add")]
-        //public IActionResult Insert(User user)
-        //{
-        //    var result = _userService.Insert(user);
-        //    if (result.Success)
-        //    {
-        //        return Ok(result);
-        //    }
-        //    return BadRequest(result);
-        //}
+        ////[HttpPost("add")]
+        ////public IActionResult Insert(User user)
+        ////{
+        ////    var result = _userService.Add(user);
+        ////    if (result.Success)
+        ////    {
+        ////        return Ok(result);
+        ////    }
+        ////    return BadRequest(result);
+        ////}
 
         //[HttpPost("Delete")]
         //public IActionResult Delete(User user)
         //{
         //    var result = _userService.Delete(user);
-        //    if (result.Success) 
+        //    if (result.Success)
         //    {
         //        return Ok(result);
         //    }
