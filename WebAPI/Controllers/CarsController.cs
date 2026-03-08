@@ -1,6 +1,5 @@
 ﻿using Business.Abstract;
 using Entities.Concrete;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
@@ -63,7 +62,7 @@ namespace WebAPI.Controllers
         [HttpGet("getdailyprice")]
         public IActionResult GetCarsDailyPrice()
         {
-            var result  = _carService.GetCarsDailyPrice();
+            var result = _carService.GetCarsDailyPrice();
             if (result.Success)
             {
                 return Ok(result);
@@ -83,7 +82,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("delete")]
-        public IActionResult Delete(Car car) 
+        public IActionResult Delete(Car car)
         {
             var result = _carService.Delete(car);
             if (result.Success)
